@@ -12,16 +12,28 @@ const btnNew = document.querySelector('.btn--new');
 const btnRoll = document.querySelector('.btn--roll');
 const btnHold = document.querySelector('.btn--hold');
 
-//Starting values
-score0.textContent = 0;
-score1.textContent = 0;
-dice.classList.add('hidden');
-const scores = [0, 0];
-let currentScore = 0;
-let activePlayer = 0;
-let isPlaying = true;
-
 //funtions
+
+//Starting condition
+let scores, currentScore, activePlayer, isPlaying;
+const init = () => {
+  scores = [0, 0];
+  currentScore = 0;
+  activePlayer = 0;
+  isPlaying = true;
+
+  current0.textContent = 0;
+  current1.textContent = 0;
+  score0.textContent = 0;
+  score1.textContent = 0;
+
+  dice.classList.add('hidden');
+  player0.classList.remove('player--winner');
+  player1.classList.remove('player--winner');
+  player0.classList.add('player--active');
+  player1.classList.remove('player--active');
+};
+
 const switchPlayer = () => {
   document.getElementById(`current--${activePlayer}`).textContent = 0;
   activePlayer = activePlayer === 0 ? 1 : 0;
@@ -30,6 +42,7 @@ const switchPlayer = () => {
   player1.classList.toggle('player--active');
 };
 
+init();
 //Rolling Dice Functionalities
 btnRoll.addEventListener('click', function () {
   if (isPlaying) {
@@ -51,13 +64,14 @@ btnRoll.addEventListener('click', function () {
   }
 });
 
+//Hold Button Functionalities
 btnHold.addEventListener('click', function () {
   if (isPlaying) {
     //Add the current score to the active player
     scores[activePlayer] += currentScore;
     document.getElementById(`score--${activePlayer}`).textContent =
       scores[activePlayer];
-    if (scores[activePlayer] >= 10) {
+    if (scores[activePlayer] >= 100) {
       //Check if anyones score is 100 and end the game
       dice.classList.add('hidden');
       isPlaying = false;
@@ -73,3 +87,6 @@ btnHold.addEventListener('click', function () {
     }
   }
 });
+
+//Reset Button
+btnNew.addEventListener('click', init);
